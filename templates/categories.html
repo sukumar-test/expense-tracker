@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Expense Categories</h2>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Category Breakdown</h5>
+            </div>
+            <div class="card-body">
+                {% if categories %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Total Amount</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set total = categories.values()|sum %}
+                                {% for category, amount in categories.items() %}
+                                <tr>
+                                    <td>{{ category }}</td>
+                                    <td>${{ "%.2f"|format(amount) }}</td>
+                                    <td>
+                                        {% set percentage = (amount / total * 100) if total > 0 else 0 %}
+                                        {{ "%.1f"|format(percentage) }}%
+                                        <div class="progress">
+                                            <div class="progress-bar bg-info" role="progressbar" 
+                                                 style="width: {{ percentage }}%" 
+                                                 aria-valuenow="{{ percentage }}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot class="table-dark">
+                                <tr>
+                                    <td><strong>Total</strong></td>
+                                    <td colspan="2"><strong>${{ "%.2f"|format(total) }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        No expense data available.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Visual Representation</h5>
+            </div>
+            <div class="card-body">
+                {% if categories %}
+                    <canvas id="categoryChart"></canvas>
+                {% else %}
+                    <div class="alert alert-info">
+                        No expense data available for visualization.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Expenses List</a>
+</div>
+
+{% if categories %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const categoryLabels = {{ categories.keys()|list|tojson }};
+        const categoryData = {{ categories.values()|list|tojson }};
+        
+        const backgroundColors = [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(255, 99, 255, 0.8)',
+            'rgba(54, 162, 86, 0.8)',
+            'rgba(200, 206, 235, 0.8)'
+        ];
+        
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryData,
+                    backgroundColor: backgroundColors.slice(0, categoryLabels.length),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: $${value.toFixed(2)} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}
