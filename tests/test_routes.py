@@ -124,3 +124,18 @@ def test_non_existent_expense_delete(client):
     """Test deleting a non-existent expense."""
     response = client.get('/delete/999')
     assert response.status_code == 404
+
+def test_add_expense_invalid_data(client):
+    """Test adding an expense with invalid data."""
+    response = client.post('/add', data={
+        'title': '',
+        'amount': 'invalid',
+        'category': '',
+        'date': 'invalid-date',
+        'description': ''
+    }, follow_redirects=True)
+    
+    assert response.status_code == 200
+    assert b'Error adding expense' in response.data
+    assert b'This field is required.' in response.data
+    assert b'Invalid amount' in response.data

@@ -22,20 +22,14 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
       }
     },
-    "postgres": {
+    "movie-booking": {
       "command": "docker",
       "args": [
         "run",
         "-i",
         "--rm",
-        "-e",
-        "DATABASE_URI",
-        "crystaldba/postgres-mcp",
-        "--access-mode=unrestricted"
-      ],
-      "env": {
-        "DATABASE_URI": "postgresql://username:password@localhost:5432/dbname"
-      }
+        "movie-ticket-booking-mcp"
+      ]
     }
   }
 }

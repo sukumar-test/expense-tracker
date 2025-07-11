@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Expense{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4>Delete Expense</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Are you sure you want to delete the following expense?</h5>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <p><strong>Title:</strong> {{ expense.title }}</p>
+                        <p><strong>Amount:</strong> ${{ expense.amount }}</p>
+                        <p><strong>Category:</strong> {{ expense.category }}</p>
+                        <p><strong>Date:</strong> {{ expense.date.strftime('%Y-%m-%d') }}</p>
+                        {% if expense.description %}
+                        <p><strong>Description:</strong> {{ expense.description }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <form method="POST">
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

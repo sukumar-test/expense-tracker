@@ -1,0 +1,3 @@
+---
+applyTo: "**/*.java,*.java"
+---
