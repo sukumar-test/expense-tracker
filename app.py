@@ -62,31 +62,16 @@ def add():
     # Pass today's date to the template
     return render_template('add.html', now=datetime.utcnow())
 
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
-def edit(id):
-    expense = Expense.query.get_or_404(id)
-    
-    if request.method == 'POST':
-        expense.title = request.form.get('title')
-        expense.amount = float(request.form.get('amount'))
-        expense.category = request.form.get('category')
-        date_str = request.form.get('date')
-        expense.date = datetime.strptime(date_str, '%Y-%m-%d') if date_str else expense.date
-        expense.description = request.form.get('description')
-        
-        db.session.commit()
-        flash('Expense updated successfully!', 'success')
-        return redirect(url_for('index'))
-        
-    return render_template('edit.html', expense=expense)
-
-@app.route('/delete/<int:id>')
+@app.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
     expense = Expense.query.get_or_404(id)
-    db.session.delete(expense)
-    db.session.commit()
-    flash('Expense deleted successfully!', 'danger')
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        db.session.delete(expense)
+        db.session.commit()
+        flash('Expense deleted successfully!', 'success')
+        return redirect(url_for('index'))
+    return render_template('delete.html', expense=expense)
+
 
 @app.route('/categories')
 def categories():
