@@ -103,6 +103,11 @@ def api_expenses():
         
     return jsonify(result)
 
+@app.route('/game')
+def game():
+    """Car race game page."""
+    return render_template('game.html')
+
 # Create the database tables
 with app.app_context():
     db.create_all()

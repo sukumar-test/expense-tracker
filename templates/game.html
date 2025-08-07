@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">🏎️ Car Race Game</h4>
+            </div>
+            <div class="card-body text-center">
+                <div id="gameContainer">
+                    <canvas id="gameCanvas" width="400" height="600"></canvas>
+                    <div id="gameUI" class="mt-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6>Score</h6>
+                                        <h4 id="scoreDisplay">0</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6>Speed</h6>
+                                        <h4 id="speedDisplay">1</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6>Lives</h6>
+                                        <h4 id="livesDisplay">3</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button id="startBtn" class="btn btn-success btn-lg">Start Game</button>
+                            <button id="pauseBtn" class="btn btn-warning btn-lg" style="display:none;">Pause</button>
+                            <button id="restartBtn" class="btn btn-secondary btn-lg" style="display:none;">Restart</button>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                Use ← → arrow keys or A/D keys to move your car<br>
+                                Avoid the red cars to survive!
+                            </small>
+                        </div>
+                    </div>
+                    <div id="gameOverScreen" class="mt-3" style="display:none;">
+                        <div class="alert alert-danger">
+                            <h4>Game Over!</h4>
+                            <p>Final Score: <span id="finalScore">0</span></p>
+                            <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Back to Expenses</a>
+</div>
+
+<script src="{{ url_for('static', filename='js/car-race-game.js') }}"></script>
+{% endblock %}

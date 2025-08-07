@@ -124,3 +124,11 @@ def test_non_existent_expense_delete(client):
     """Test deleting a non-existent expense."""
     response = client.get('/delete/999')
     assert response.status_code == 404
+
+def test_game_route(client):
+    """Test the car race game page."""
+    response = client.get('/game')
+    assert response.status_code == 200
+    assert b'Car Race Game' in response.data
+    assert b'gameCanvas' in response.data
+    assert b'Start Game' in response.data
