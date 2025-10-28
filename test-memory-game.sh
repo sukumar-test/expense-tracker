@@ -124,6 +124,10 @@ echo ""
 echo "Stopping server..."
 kill $SERVER_PID 2>/dev/null
 sleep 1
+# Force kill if still running
+if ps -p $SERVER_PID > /dev/null 2>&1; then
+    kill -9 $SERVER_PID 2>/dev/null
+fi
 
 # Print summary
 echo ""
