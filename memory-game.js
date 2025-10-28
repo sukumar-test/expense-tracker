@@ -57,6 +57,14 @@ const server = http.createServer((req, res) => {
   let filePath = req.url === '/' ? '/templates/memory-game.html' : req.url;
   filePath = path.join(__dirname, filePath);
 
+  // Security: Validate that the resolved path is within the project directory
+  const normalizedPath = path.normalize(filePath);
+  if (!normalizedPath.startsWith(__dirname)) {
+    res.writeHead(403, { 'Content-Type': 'text/html' });
+    res.end('<h1>403 - Forbidden</h1>', 'utf-8');
+    return;
+  }
+
   // Get file extension
   const extname = String(path.extname(filePath)).toLowerCase();
   const contentType = mimeTypes[extname] || 'application/octet-stream';
