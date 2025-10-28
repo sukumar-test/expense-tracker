@@ -1,0 +1,17 @@
+{
+  "name": "expense-tracker-memory-game",
+  "version": "1.0.0",
+  "description": "Memory card matching game built with Node.js",
+  "main": "memory-game.js",
+  "scripts": {
+    "start": "node memory-game.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "memory-game",
+    "nodejs",
+    "game"
+  ],
+  "author": "",
+  "license": "MIT"
+}

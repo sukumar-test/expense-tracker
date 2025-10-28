@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <link rel="stylesheet" href="/static/css/memory-game.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Memory Card Game</h1>
+            <p>Match all the pairs to win!</p>
+        </header>
+
+        <div class="game-info">
+            <div class="info-item">
+                <span class="label">Moves:</span>
+                <span id="moves" class="value">0</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Time:</span>
+                <span id="timer" class="value">0:00</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Best Score:</span>
+                <span id="best-score" class="value">-</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="new-game-btn" class="btn">New Game</button>
+            <button id="reset-stats-btn" class="btn btn-secondary">Reset Stats</button>
+        </div>
+
+        <div id="game-board" class="game-board">
+            <!-- Cards will be dynamically generated here -->
+        </div>
+
+        <div id="win-modal" class="modal">
+            <div class="modal-content">
+                <h2>🎉 Congratulations!</h2>
+                <p>You won in <span id="final-moves">0</span> moves and <span id="final-time">0:00</span>!</p>
+                <button id="play-again-btn" class="btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/memory-game.js"></script>
+</body>
+</html>
