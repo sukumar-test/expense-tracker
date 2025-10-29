@@ -1,11 +1,28 @@
-"""
-Test file for testing database models in the expense tracker application.
+"""Test suite for database models in the Expense Tracker application.
+
+This module contains tests for the Expense model, including:
+- Model creation and persistence
+- Field validation and data integrity
+- Default value handling
+- String representation (__repr__)
+
+All tests use pytest fixtures defined in conftest.py for database setup.
 """
 from datetime import datetime, date
 from app import Expense, db
 
 def test_expense_model(app):
-    """Test the Expense model."""
+    """Test the Expense model creation and field persistence.
+    
+    Verifies that:
+    - An Expense instance can be created with all fields
+    - The expense can be saved to the database
+    - All fields are correctly persisted and queryable
+    - The __repr__ method returns the expected format
+    
+    Args:
+        app (Flask): The Flask application fixture.
+    """
     with app.app_context():
         # Create a new expense
         expense = Expense(
@@ -35,7 +52,16 @@ def test_expense_model(app):
         assert repr(queried_expense) == '<Expense Test Model>'
         
 def test_expense_default_date(app):
-    """Test that the expense model uses default date when none is provided."""
+    """Test that the Expense model uses default date when none is provided.
+    
+    Verifies that:
+    - An expense can be created without specifying a date
+    - The model automatically assigns the current date
+    - The assigned date is valid
+    
+    Args:
+        app (Flask): The Flask application fixture.
+    """
     with app.app_context():
         # Create a new expense without a date
         expense = Expense(

@@ -1,3 +1,25 @@
+"""Test configuration and fixtures for the Expense Tracker application.
+
+This module provides pytest fixtures for testing the Flask application.
+It sets up test database instances with sample data and provides test clients
+for making requests to the application during testing.
+
+The fixtures use temporary SQLite databases that are created for each test
+and cleaned up afterwards to ensure test isolation.
+
+Fixtures:
+    app: Configured Flask application instance for testing.
+    client: Test client for making HTTP requests to the application.
+    runner: Test CLI runner for the application.
+    
+Example:
+    To use these fixtures in tests::
+    
+        def test_example(client):
+            response = client.get('/')
+            assert response.status_code == 200
+"""
+
 import pytest
 import os
 import sys
@@ -14,7 +36,34 @@ from app import db, Expense
 
 @pytest.fixture
 def app():
-    """Create and configure a Flask app for testing."""
+    """Create and configure a Flask app instance for testing.
+    
+    Creates a temporary SQLite database for each test to ensure isolation.
+    The database is populated with sample expense data for testing purposes.
+    
+    Yields:
+        Flask: Configured Flask application instance with test settings and sample data.
+        
+    Configuration:
+        - TESTING: Set to True to enable test mode
+        - SQLALCHEMY_DATABASE_URI: Points to a temporary SQLite database
+        - WTF_CSRF_ENABLED: Disabled for easier form testing
+        
+    Sample Data:
+        Three sample expenses are created:
+        1. Grocery Shopping - $150.75 (Food category)
+        2. Electric Bill - $87.30 (Utilities category)
+        3. Movie Tickets - $35.50 (Entertainment category)
+        
+    Cleanup:
+        The temporary database file is automatically deleted after the test completes.
+        
+    Example:
+        >>> def test_with_app(app):
+        ...     with app.app_context():
+        ...         expenses = Expense.query.all()
+        ...         assert len(expenses) == 3
+    """
     # Create a temporary file to isolate the database for each test
     db_fd, db_path = tempfile.mkstemp()
     
@@ -65,10 +114,39 @@ def app():
 
 @pytest.fixture
 def client(app):
-    """A test client for the app."""
+    """Create a test client for making HTTP requests to the application.
+    
+    The test client can be used to make GET, POST, and other HTTP requests
+    to the application routes without running a real server.
+    
+    Args:
+        app (Flask): The Flask application fixture.
+        
+    Returns:
+        FlaskClient: A test client for the Flask application.
+        
+    Example:
+        >>> def test_index_page(client):
+        ...     response = client.get('/')
+        ...     assert response.status_code == 200
+    """
     return app.test_client()
 
 @pytest.fixture
 def runner(app):
-    """A test CLI runner for the app."""
+    """Create a test CLI runner for the application.
+    
+    The CLI runner can be used to test Flask CLI commands.
+    
+    Args:
+        app (Flask): The Flask application fixture.
+        
+    Returns:
+        FlaskCliRunner: A test CLI runner for the Flask application.
+        
+    Example:
+        >>> def test_cli_command(runner):
+        ...     result = runner.invoke(args=['--help'])
+        ...     assert result.exit_code == 0
+    """
     return app.test_cli_runner()

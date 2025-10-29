@@ -1,11 +1,29 @@
-"""
-Test file for testing edge cases and error handling in the expense tracker application.
+"""Test suite for edge cases and error handling in the Expense Tracker application.
+
+This module contains tests for various edge cases and error conditions, including:
+- Invalid form data submission
+- Empty or missing form fields
+- Type conversion errors
+- Data validation failures
+
+These tests ensure the application handles unexpected input gracefully.
 """
 from datetime import datetime
 import pytest
 
 def test_invalid_form_data(client):
-    """Test submitting invalid form data."""
+    """Test submitting invalid form data to the add expense endpoint.
+    
+    Verifies that the application properly handles:
+    - Non-numeric values in the amount field
+    - Invalid date format strings
+    
+    The application should either return a non-redirect status code
+    or raise a ValueError.
+    
+    Args:
+        client (FlaskClient): The test client fixture.
+    """
     try:
         # Test with non-numeric amount
         response = client.post('/add', data={
@@ -39,7 +57,14 @@ def test_invalid_form_data(client):
         pass
 
 def test_empty_form_fields(client):
-    """Test submitting form with empty required fields."""
+    """Test submitting form with empty required fields.
+    
+    Verifies that submitting a form with an empty title field
+    either results in an error or validation message.
+    
+    Args:
+        client (FlaskClient): The test client fixture.
+    """
     # Test with empty title
     response = client.post('/add', data={
         'title': '',
@@ -53,7 +78,14 @@ def test_empty_form_fields(client):
     assert response.status_code != 302 or b'error' in response.data.lower() or b'required' in response.data.lower()
     
 def test_form_with_missing_fields(client):
-    """Test submitting form with missing fields."""
+    """Test submitting form with missing required fields.
+    
+    Verifies that the application handles missing form fields appropriately.
+    Expected behavior is either an exception or validation failure.
+    
+    Args:
+        client (FlaskClient): The test client fixture.
+    """
     # We expect a ValueError to be raised because we're trying to convert an empty string to float
     # Instead of trying to catch the error directly, let's modify our approach to test validation
     
@@ -74,7 +106,15 @@ def test_form_with_missing_fields(client):
         pass
     
 def test_edit_with_invalid_data(client, app):
-    """Test editing expense with invalid data."""
+    """Test editing an expense with invalid data.
+    
+    Verifies that attempting to update an expense with invalid data
+    (e.g., non-numeric amount) is handled appropriately.
+    
+    Args:
+        client (FlaskClient): The test client fixture.
+        app (Flask): The Flask application fixture.
+    """
     # First ensure the expense with ID 1 exists
     with app.app_context():
         from app import Expense

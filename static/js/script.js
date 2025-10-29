@@ -1,5 +1,21 @@
-// Custom scripts for the expense tracker application
+/**
+ * @fileoverview Custom JavaScript for the Expense Tracker application.
+ * 
+ * This script provides client-side functionality for the expense tracker including:
+ * - Initializing Bootstrap tooltips
+ * - Setting default date values for date inputs
+ * - Adding confirmation dialogs for delete actions
+ * 
+ * @author Expense Tracker Team
+ * @version 1.0.0
+ */
 
+/**
+ * Initializes the application when the DOM content is fully loaded.
+ * Sets up tooltips, date inputs, and delete confirmations.
+ * 
+ * @listens DOMContentLoaded
+ */
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -7,7 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-    // Set today's date as default for date inputs if they're empty
+    /**
+     * Sets today's date as default for empty date input fields.
+     * Formats the date as YYYY-MM-DD to match the HTML5 date input format.
+     */
     const dateInputs = document.querySelectorAll('input[type="date"]');
     dateInputs.forEach(input => {
         if (!input.value) {
@@ -24,7 +43,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Add confirmation for delete actions
+    /**
+     * Adds confirmation dialog for delete actions.
+     * Prevents accidental deletion by requiring user confirmation.
+     * Only adds the confirmation if one hasn't been set already.
+     */
     const deleteLinks = document.querySelectorAll('a[href*="/delete/"]');
     deleteLinks.forEach(link => {
         if (!link.getAttribute('onclick')) {
