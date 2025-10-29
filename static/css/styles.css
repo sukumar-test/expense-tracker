@@ -1,44 +1,73 @@
-/* Custom styles for the expense tracker application */
+/**
+ * Custom Styles for Expense Tracker Application
+ * 
+ * This stylesheet provides custom styling to complement Bootstrap 5.
+ * It includes styles for navigation, cards, tables, and responsive design.
+ */
 
+/* ===== Navigation Bar ===== */
+
+/* Brand/logo styling in the navbar */
 .navbar-brand {
     font-weight: bold;
     font-size: 1.5rem;
 }
 
+/* ===== Card Components ===== */
+
+/* Card styling with shadow and hover effects */
 .card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
     margin-bottom: 20px;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;     /* Smooth animation */
 }
 
+/* Lift card slightly on hover for interactivity */
 .card:hover {
     transform: translateY(-5px);
 }
 
+/* ===== Tables ===== */
+
+/* Enable horizontal scrolling on small screens */
 .table-responsive {
     overflow-x: auto;
 }
 
+/* ===== Badges ===== */
+
+/* Category badges with increased size for better visibility */
 .badge {
     font-size: 0.9rem;
     padding: 0.5em 0.7em;
 }
 
+/* ===== Progress Bars ===== */
+
+/* Slimmer progress bars for visual consistency */
 .progress {
     height: 8px;
 }
 
+/* ===== Responsive Design ===== */
+
+/* Adjustments for mobile devices (screens smaller than 768px) */
 @media (max-width: 768px) {
+    /* Reduce table font size for better fit */
     .table-responsive {
         font-size: 0.9rem;
     }
     
+    /* Smaller action buttons in button groups */
     .btn-group-sm .btn {
         padding: 0.2rem 0.4rem;
         font-size: 0.75rem;
     }
 }
 
+/* ===== Footer ===== */
+
+/* Footer positioning and spacing */
 footer {
     position: relative;
     margin-top: 2rem;

@@ -1,3 +1,16 @@
+"""
+Test configuration and fixtures for the Expense Tracker application.
+
+This module sets up pytest fixtures that are used across all test modules.
+It provides a test application instance with an isolated SQLite database
+and sample data for testing.
+
+Fixtures:
+    app: Configured Flask application instance for testing
+    client: Test client for making HTTP requests
+    runner: Test CLI runner for the application
+"""
+
 import pytest
 import os
 import sys
@@ -14,7 +27,21 @@ from app import db, Expense
 
 @pytest.fixture
 def app():
-    """Create and configure a Flask app for testing."""
+    """
+    Create and configure a Flask app for testing.
+    
+    Creates a temporary SQLite database for test isolation and populates it
+    with sample expense data. The database is automatically cleaned up after
+    each test.
+    
+    Sample data includes:
+        - Grocery Shopping: $150.75 (Food category)
+        - Electric Bill: $87.30 (Utilities category)
+        - Movie Tickets: $35.50 (Entertainment category)
+    
+    Yields:
+        Flask: Configured Flask application instance in testing mode
+    """
     # Create a temporary file to isolate the database for each test
     db_fd, db_path = tempfile.mkstemp()
     
@@ -65,10 +92,26 @@ def app():
 
 @pytest.fixture
 def client(app):
-    """A test client for the app."""
+    """
+    Create a test client for the app.
+    
+    Args:
+        app: The Flask application fixture
+    
+    Returns:
+        FlaskClient: A test client for making HTTP requests to the application
+    """
     return app.test_client()
 
 @pytest.fixture
 def runner(app):
-    """A test CLI runner for the app."""
+    """
+    Create a test CLI runner for the app.
+    
+    Args:
+        app: The Flask application fixture
+    
+    Returns:
+        FlaskCliRunner: A test runner for CLI commands
+    """
     return app.test_cli_runner()

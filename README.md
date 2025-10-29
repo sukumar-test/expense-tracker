@@ -14,6 +14,16 @@ A simple web application for tracking personal expenses built with Python and Fl
 - Comprehensive test coverage with pytest
 - Automated CI/CD pipeline with GitHub Actions
 - Automatic deployment to Azure
+- RESTful JSON API for programmatic access
+
+## Documentation
+
+This project includes comprehensive documentation:
+
+- **[API Documentation](docs/API.md)** - Detailed API endpoint documentation and usage examples
+- **[Architecture Guide](docs/ARCHITECTURE.md)** - Technical architecture and design decisions
+- **[Testing Guide](docs/TESTING.md)** - How to run and write tests
+- **[Contributing Guide](CONTRIBUTING.md)** - Developer setup and contribution guidelines
 
 ## Screenshots
 
