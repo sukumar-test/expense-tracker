@@ -36,3 +36,11 @@ build/
 # OS specific files
 .DS_Store
 Thumbs.db
+
+# Testing and coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+coverage.xml
+*.cover
