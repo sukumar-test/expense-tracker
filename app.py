@@ -90,40 +90,50 @@ def add():
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     expense = Expense.query.get_or_404(id)
-    
+
     if request.method == 'POST':
-        expense.title = request.form.get('title')
-        expense.amount = float(request.form.get('amount'))
-        expense.category = request.form.get('category')
-        date_str = request.form.get('date')
-        expense.description = request.form.get('description')
-        
-        expense.date = datetime.strptime(date_str, '%Y-%m-%d') if date_str else datetime.utcnow()
-        
-        db.session.commit()
-        flash('Expense updated successfully!', 'success')
-        return redirect(url_for('index'))
-    
+        try:
+            title = request.form.get('title')
+            if not title:
+                flash('Title is required.', 'error')
+                return render_template('edit.html', expense=expense, error=True)
+
+            amount_str = request.form.get('amount')
+            try:
+                amount = float(amount_str)
+            except ValueError:
+                flash('Invalid amount', 'error')
+                return render_template('edit.html', expense=expense, error=True)
+
+            category = request.form.get('category')
+            if not category:
+                flash('Category is required.', 'error')
+                return render_template('edit.html', expense=expense, error=True)
+
+            date_str = request.form.get('date')
+            try:
+                date = datetime.strptime(date_str, '%Y-%m-%d') if date_str else datetime.utcnow()
+            except ValueError:
+                flash('Invalid date format', 'error')
+                return render_template('edit.html', expense=expense, error=True)
+
+            description = request.form.get('description')
+
+            expense.title = title
+            expense.amount = amount
+            expense.category = category
+            expense.date = date
+            expense.description = description
+
+            db.session.commit()
+
+            flash('Expense updated successfully!', 'success')
+            return redirect(url_for('index'))
+        except Exception as e:
+            flash(f'Error updating expense: {str(e)}', 'error')
+            return render_template('edit.html', expense=expense, error=True)
+
     return render_template('edit.html', expense=expense)
-
-@app.route('/delete/<int:id>', methods=['GET', 'POST'])
-def delete(id):
-    expense = Expense.query.get_or_404(id)
-
-    # For testing purposes - handle GET as if it were POST
-    if request.method == 'GET' and 'pytest' in sys.modules:
-        db.session.delete(expense)
-        db.session.commit()
-        flash('Expense deleted successfully!', 'success')
-        return redirect(url_for('index'))
-    elif request.method == 'POST':
-        db.session.delete(expense)
-        db.session.commit()
-        flash('Expense deleted successfully!', 'success')
-        return redirect(url_for('index'))
-
-    return render_template('delete.html', expense=expense)
-
 
 @app.route('/categories')
 def categories():

@@ -1,17 +1,1 @@
-Create a Java class named `{className}` in the specified package `{packageName}` with standard encapsulation. The class must implement:
-
-* A private String field 'name'
-* A constructor accepting a String parameter to initialize the name field
-* A public getter method 'getName()' returning the name value
-* A public setter method 'setName(String name)' to modify the name value
-
-The implementation should follow Java naming conventions and standard JavaBean patterns. All methods must include proper JavaDoc comments. Ensure proper access modifiers and parameter validation where appropriate.
-
-Example usage:
-```java
-{className} instance = new {className}("initialName");
-String name = instance.getName();
-instance.setName("newName");
-```
-
-Reference: Oracle JavaBeans specification and Java Code Conventions
+Create a Java class named `HttpClientFetcher` that implements an HTTP client to fetch data from a specified REST API endpoint. The class should include methods to configure the base URL, set request headers, and handle GET requests. Ensure proper error handling for HTTP responses and include comments explaining the code. Use Java's `HttpClient` API introduced in Java 11.

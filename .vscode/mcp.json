@@ -22,14 +22,15 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
       }
     },
-    "movie-booking": {
+    "movie-booking":{
       "command": "docker",
       "args": [
         "run",
         "-i",
         "--rm",
         "movie-ticket-booking-mcp"
-      ]
+      ],
+      "env": {}
     }
   }
 }
