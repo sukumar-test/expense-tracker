@@ -1,11 +1,23 @@
+"""Tests for database models in the expense tracker application.
+
+This module contains test cases that verify the correct behavior of the
+Expense model, including field validation, default values, and database operations.
 """
-Test file for testing database models in the expense tracker application.
-"""
+
 from datetime import datetime, date
 from app import Expense, db
 
+
 def test_expense_model(app):
-    """Test the Expense model."""
+    """Test the Expense model creation and database operations.
+    
+    Verifies that an Expense object can be created with all fields,
+    saved to the database, and queried correctly. Also tests the
+    __repr__ method.
+    
+    Args:
+        app (Flask): The Flask application fixture with test database.
+    """
     with app.app_context():
         # Create a new expense
         expense = Expense(
@@ -35,7 +47,14 @@ def test_expense_model(app):
         assert repr(queried_expense) == '<Expense Test Model>'
         
 def test_expense_default_date(app):
-    """Test that the expense model uses default date when none is provided."""
+    """Test that the Expense model uses a default date when none is provided.
+    
+    Verifies that when an Expense is created without specifying a date,
+    the model automatically assigns a valid date value.
+    
+    Args:
+        app (Flask): The Flask application fixture with test database.
+    """
     with app.app_context():
         # Create a new expense without a date
         expense = Expense(

@@ -1,13 +1,35 @@
 #!/usr/bin/env python3
+"""Test runner script for the expense tracker application.
+
+This script provides a command-line interface for running tests with coverage
+reporting. It supports multiple output formats including terminal, HTML, and XML.
+
+Usage:
+    python run_tests.py              # Run tests with terminal coverage report
+    python run_tests.py --html       # Generate HTML coverage report
+    python run_tests.py --xml        # Generate XML coverage report for CI/CD
+    python run_tests.py --verbose    # Run with verbose output
+
+Examples:
+    python run_tests.py --html --verbose
+    python run_tests.py --xml
 """
-A simple test script to run all tests with coverage and generate reports.
-"""
+
 import pytest
 import os
 import sys
 import argparse
 
+
 def main():
+    """Run the test suite with coverage reporting.
+    
+    Parses command-line arguments and executes pytest with appropriate
+    configuration for coverage reporting.
+    
+    Returns:
+        int: Exit code from pytest (0 for success, non-zero for failures).
+    """
     parser = argparse.ArgumentParser(description="Run tests for Expense Tracker with coverage.")
     parser.add_argument("--html", action="store_true", help="Generate HTML coverage report")
     parser.add_argument("--xml", action="store_true", help="Generate XML coverage report for CI/CD")

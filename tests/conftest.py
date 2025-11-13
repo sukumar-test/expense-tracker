@@ -1,3 +1,9 @@
+"""Pytest configuration and fixtures for the expense tracker tests.
+
+This module provides pytest fixtures that set up the test environment,
+including a test Flask application with an isolated database and test client.
+"""
+
 import pytest
 import os
 import sys
@@ -12,9 +18,20 @@ sys.path.insert(0, parent_dir)
 import app as flask_app_module
 from app import db, Expense
 
+
 @pytest.fixture
 def app():
-    """Create and configure a Flask app for testing."""
+    """Create and configure a Flask app for testing.
+    
+    Sets up a temporary database for isolated testing, configures the app
+    for testing mode, and populates it with sample expense data.
+    
+    Yields:
+        Flask: A configured Flask application instance for testing.
+        
+    Cleanup:
+        Removes the temporary database file after tests complete.
+    """
     # Create a temporary file to isolate the database for each test
     db_fd, db_path = tempfile.mkstemp()
     
@@ -65,10 +82,25 @@ def app():
 
 @pytest.fixture
 def client(app):
-    """A test client for the app."""
+    """Create a test client for the Flask app.
+    
+    Args:
+        app (Flask): The Flask application fixture.
+        
+    Returns:
+        FlaskClient: A test client for making requests to the app.
+    """
     return app.test_client()
+
 
 @pytest.fixture
 def runner(app):
-    """A test CLI runner for the app."""
+    """Create a test CLI runner for the Flask app.
+    
+    Args:
+        app (Flask): The Flask application fixture.
+        
+    Returns:
+        FlaskCliRunner: A test CLI runner for the app.
+    """
     return app.test_cli_runner()
