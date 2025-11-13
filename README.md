@@ -15,6 +15,16 @@ A simple web application for tracking personal expenses built with Python and Fl
 - Automated CI/CD pipeline with GitHub Actions
 - Automatic deployment to Azure
 
+## Documentation
+
+For detailed documentation, please visit the [docs](docs/) directory:
+
+- **[User Guide](docs/USER_GUIDE.md)** - Complete guide for using the application
+- **[API Documentation](docs/API.md)** - REST API reference
+- **[Architecture](docs/ARCHITECTURE.md)** - Technical architecture and design
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Deployment instructions for various platforms
+- **[Contributing Guide](CONTRIBUTING.md)** - Development and contribution guidelines
+
 ## Screenshots
 
 (Screenshots will be available after running the application)
