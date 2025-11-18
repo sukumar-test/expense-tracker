@@ -1,11 +1,32 @@
-"""
-Test file for testing edge cases and error handling in the expense tracker application.
+"""Test suite for edge cases and error handling in the expense tracker.
+
+This module tests the application's robustness by validating error handling
+for invalid inputs, missing data, malformed requests, and boundary conditions
+that could cause failures in production.
 """
 from datetime import datetime
 import pytest
 
 def test_invalid_form_data(client):
-    """Test submitting invalid form data."""
+    """Test form submission with invalid data types.
+
+    This test validates that the application properly handles form submissions
+    with invalid data types, such as non-numeric amounts and malformed dates.
+    It verifies that the application either returns an error response or
+    raises an appropriate exception.
+
+    Args:
+        client: Flask test client fixture for making HTTP requests.
+
+    Asserts:
+        - Non-numeric amount submission doesn't result in a redirect (302)
+        - Invalid date format submission doesn't result in a redirect (302)
+
+    Note:
+        The test uses try-except blocks to handle both scenarios where the
+        application returns an error response or raises a ValueError exception.
+        Either behavior is acceptable for input validation.
+    """
     try:
         # Test with non-numeric amount
         response = client.post('/add', data={
@@ -39,7 +60,23 @@ def test_invalid_form_data(client):
         pass
 
 def test_empty_form_fields(client):
-    """Test submitting form with empty required fields."""
+    """Test form submission with empty required fields.
+
+    This test validates that the application properly handles submissions
+    where required fields (like title) are left empty. The application should
+    either prevent the submission or display an appropriate error message.
+
+    Args:
+        client: Flask test client fixture for making HTTP requests.
+
+    Asserts:
+        - Empty title submission doesn't result in a redirect (302), or
+        - Error/required field message is displayed in the response
+
+    Note:
+        The test uses flexible assertions to accommodate different validation
+        approaches (client-side vs. server-side validation).
+    """
     # Test with empty title
     response = client.post('/add', data={
         'title': '',
@@ -53,7 +90,25 @@ def test_empty_form_fields(client):
     assert response.status_code != 302 or b'error' in response.data.lower() or b'required' in response.data.lower()
     
 def test_form_with_missing_fields(client):
-    """Test submitting form with missing fields."""
+    """Test form submission with missing field data.
+
+    This test validates the application's handling of incomplete form
+    submissions where required fields are omitted entirely. The application
+    should prevent successful expense creation in such cases.
+
+    Args:
+        client: Flask test client fixture for making HTTP requests.
+
+    Asserts:
+        - Missing required fields don't result in successful expense addition
+        - Either an exception is raised or success message is absent
+
+    Note:
+        The test uses exception handling to accommodate different validation
+        strategies. Any exception raised during processing indicates proper
+        validation behavior. If no exception occurs, the test verifies that
+        the success message is not displayed.
+    """
     # We expect a ValueError to be raised because we're trying to convert an empty string to float
     # Instead of trying to catch the error directly, let's modify our approach to test validation
     
@@ -74,7 +129,26 @@ def test_form_with_missing_fields(client):
         pass
     
 def test_edit_with_invalid_data(client, app):
-    """Test editing expense with invalid data."""
+    """Test editing an expense with invalid data values.
+
+    This test validates that the application properly handles edit operations
+    with invalid data types (e.g., non-numeric amount). It ensures data
+    integrity by preventing invalid updates to existing records.
+
+    Args:
+        client: Flask test client fixture for making HTTP requests.
+        app: Flask application fixture with application context.
+
+    Asserts:
+        - Submission with invalid amount doesn't result in a redirect (302)
+        - ValueError exception may be raised for type conversion failures
+
+    Note:
+        The test first verifies that expense ID 1 exists before attempting
+        the edit operation. If the expense doesn't exist, the test is skipped.
+        The test accepts either error response or exception as valid validation
+        behavior.
+    """
     # First ensure the expense with ID 1 exists
     with app.app_context():
         from app import Expense
