@@ -1,11 +1,30 @@
-"""
-Test file for testing database models in the expense tracker application.
+"""Test suite for database models in the expense tracker application.
+
+This module contains comprehensive tests for the Expense model, including
+validation of model creation, database operations, field constraints, and
+default value behavior.
 """
 from datetime import datetime, date
 from app import Expense, db
 
 def test_expense_model(app):
-    """Test the Expense model."""
+    """Test the Expense model creation and database persistence.
+
+    This test validates the complete lifecycle of an Expense model instance:
+    - Creates an expense with all required and optional fields
+    - Persists the expense to the database
+    - Queries the database to retrieve the expense
+    - Validates all field values match the input data
+    - Verifies the __repr__ method returns the expected string format
+
+    Args:
+        app: Flask application fixture with application context.
+
+    Asserts:
+        - Expense is successfully created and persisted
+        - All field values (title, amount, category, date, description) match
+        - The __repr__ method returns '<Expense {title}>' format
+    """
     with app.app_context():
         # Create a new expense
         expense = Expense(
@@ -35,7 +54,24 @@ def test_expense_model(app):
         assert repr(queried_expense) == '<Expense Test Model>'
         
 def test_expense_default_date(app):
-    """Test that the expense model uses default date when none is provided."""
+    """Test default date assignment when no date is provided.
+
+    This test verifies that the Expense model correctly assigns a default
+    date value when an expense is created without explicitly providing a date.
+    This tests the model's date field default behavior.
+
+    Args:
+        app: Flask application fixture with application context.
+
+    Asserts:
+        - An expense can be created without providing a date
+        - The date field is automatically populated (not None)
+        - The assigned date is a valid date object
+
+    Note:
+        The test doesn't check for a specific date value since it depends
+        on when the test runs, but validates the date type and existence.
+    """
     with app.app_context():
         # Create a new expense without a date
         expense = Expense(
